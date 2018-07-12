@@ -1,0 +1,86 @@
+body {
+    background-color: #ffffff;
+}
+
+li.nav-active a {
+    color: #ffffff !important;
+    text-decoration: none;
+}
+
+nav li.active {
+        background-color: #24292e !important;
+}
+
+body nav.navbar-head {
+    padding: 5px 5px 5px 5px;
+    font-size: 20px;
+    margin-bottom: 45px;
+    background-color: #24292e;
+    color: rgba(255, 255, 255, 0.75);
+}
+
+.navbar-head .container-fluid {
+    margin-left: 45px;
+    margin-right: 45px;
+}
+
+body nav.navbar-head li a:hover {
+    color: #ffffff !important;
+    text-decoration: none;
+}
+
+.container .breadcrumb {
+    margin-top: 0;
+}
+
+.container .page-nodes .page-node {
+    border: 1px solid #d1d5da;
+    border-radius: 3px;
+    padding: 32px !important;
+    margin-bottom: 32px;
+
+}
+
+div.comment-area form button {
+    margin-top: 10px;
+    margin-bottom: 10px;
+}
+
+div.comment-list {
+    margin-top: 10px;
+    margin-bottom: 10px;
+}
+
+.side-nodes .side-node {
+    border: 1px solid #d1d5da;
+    border-radius: 3px;
+    padding: 8px 16px;
+    margin-bottom: 32px;
+
+}
+
+.btn-default {
+    color: #0366d6 !important;
+    background-color: white !important;
+}
+
+.btn-default:hover {
+    background-color: #0366d6 !important;
+    color: white !important;
+}
+
+.page-node .blog-caption a {
+    color: #000000;
+}
+
+.page-node .blog-caption a:hover {
+    text-decoration: none;
+}
+
+.page-node .blog-caption a:visited {
+    text-decoration: none;
+}
+
+.page-node .blog-caption a:active {
+    text-decoration: none;
+}

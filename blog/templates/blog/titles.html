@@ -1,0 +1,25 @@
+{% extends 'base.html' %}
+
+{% block title %}
+  blog titles
+{% endblock %}
+
+{% block centent %}
+  <div class="row text-center">
+    <h1>我的博客</h1>
+  </div>
+  <div class="row">
+    <div class="col-xs-12 col-md-8">
+      <ul>
+        {% for blog in blogs %}
+          <li><a href="{% url 'blog:blog_article' blog.id %}">{{ blog.title }}</a></li>
+        {% endfor %}
+      </ul>
+    </div>
+    <div class="col-xs-6 col-md-4">
+      <h2>广告</h2>
+      <p>23333</p>
+      <img width="200px" src="https://v3.bootcss.com/assets/img/components.png">
+    </div>
+  </div>
+{% endblock %}

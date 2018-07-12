@@ -1,0 +1,26 @@
+{% extends 'base.html' %}
+
+{% block title %}
+  blog article
+{% endblock %}
+
+{% block centent %}
+  <div class="row text-center ">
+    <h1>{{ article }}</h1>
+  </div>
+
+  <div class="row">
+    <div class="col-xs-12 col-md-8">
+      <p class="text-center">
+        <span>{{ article.author.username }}</span>
+        <span style="margin-left: 20px">{{ publish_time }}</span>
+      </p>
+      <div>{{ article.body }}</div>
+    </div>
+    <div class="col-xs-6 col-md-4">
+      <h2>广告</h2>
+      <p>23333</p>
+      <img width="200px" src="https://v3.bootcss.com/assets/img/components.png">
+    </div>
+  </div>
+{% endblock %}
