@@ -1,52 +1,114 @@
 {% extends 'base.html' %}
+{% load widget_tweaks %}
 {% block title %}Login{% endblock %}
 {% block centent %}
   <div class="row text-center">
     <h1>登录</h1>
     <p>输入用户名和密码</p>
-    <form class="form-horizontal" action="{% url 'account:user_register' %}" method="post">
-      {% csrf_token %}
-      <div class="form-group">
-        <label for="id_username" class="col-sm-2 col-sm-offset-2 control-label">用户名：</label>
-        <div class="col-sm-4">
-          <input type="text" class="form-control" name="username" id="id_username" required placeholder="请输入用户名">
-        </div>
+{#    <form class="form-horizontal" action="{% url 'account:user_register' %}" method="post">#}
+{#      {% csrf_token %}#}
+{#      <div class="form-group">#}
+{#        <label for="{{ user_form.username.id_for_label }}" class="col-sm-2 col-sm-offset-2 control-label">用户名：</label>#}
+{#        <div class="col-sm-4">#}
+{#          <input type="text" class="form-control" name="username" id="id_username" required placeholder="请输入用户名">#}
+{#        </div>#}
+{#      </div>#}
+{#      <div class="form-group">#}
+{#        <label for="id_phone" class="col-sm-2 col-sm-offset-2 control-label">手机：</label>#}
+{#        <div class="col-sm-4">#}
+{#          <input type="text" class="form-control" name="phone" id="id_phone" required placeholder="请输入手机号">#}
+{#        </div>#}
+{#      </div>#}
+{#      <div class="form-group">#}
+{#        <label for="id_email" class="col-sm-2 col-sm-offset-2 control-label">邮箱：</label>#}
+{#        <div class="col-sm-4">#}
+{#          <input type="email" class="form-control" name="email" id="id_email" required placeholder="请输入邮箱">#}
+{#        </div>#}
+{#      </div>#}
+{#      <div class="form-group">#}
+{#        <label for="id_password" class="col-sm-2 col-sm-offset-2 control-label">密码：</label>#}
+{#        <div class="col-sm-4">#}
+{#          <input type="password" class="form-control" name="password" id="id_password" required placeholder="请输入密码">#}
+{#        </div>#}
+{#      </div>#}
+{#      <div class="form-group">#}
+{#        <label for="id_password2" class="col-sm-2 col-sm-offset-2 control-label">确认密码：</label>#}
+{#        <div class="col-sm-4">#}
+{#          <input type="password" class="form-control" name="password2" id="id_password2" required placeholder="请输入密码">#}
+{#        </div>#}
+{#      </div>#}
+{#      <div class="form-group">#}
+{#        <label for="id_birth" class="col-sm-2 col-sm-offset-2 control-label">生日：</label>#}
+{#        <div class="col-sm-4">#}
+{#          <input type="date" class="form-control" name="birth" id="id_birth">#}
+{#        </div>#}
+{#      </div>#}
+{#      <div class="form-group">#}
+{#        <div class="col-sm-offset-6 col-sm-2">#}
+{#          <button type="submit" class="btn btn-default">注册</button>#}
+{#        </div>#}
+{#      </div>#}
+{#    </form>#}
+  <form class="form-horizontal" action="{% url 'account:user_register' %}" method="post">
+    {% csrf_token %}
+{#    {% for field in user_form.visible_fields %}#}
+{#    <div class="form-group">#}
+{#    <label for="{{ field.id_for_label }}" class="col-sm-2 col-sm-offset-2 control-label">{{ field.label }}</label>#}
+{#    <div class="col-sm-4">#}
+{#      {% render_field field class='form-control' placeholder=field.label type=field.field.type %}#}
+{#    </div>#}
+{#    </div>#}
+{#    {% endfor %}#}
+{#    {% for field in user_profile.visible_fields %}#}
+{#    <div class="form-group">#}
+{#    <label for="{{ field.id_for_label }}" class="col-sm-2 col-sm-offset-2 control-label">{{ field.label }}</label>#}
+{#    <div class="col-sm-4">#}
+{#      {% render_field field class='form-control' placeholder=field.label type='' %}#}
+{#    </div>#}
+{#    </div>#}
+{#    {% endfor %}#}
+    <div class="form-group">
+      <label for="{{ user_form.username.id_for_label }}" class="col-sm-2 col-sm-offset-2 control-label">{{ user_form.username.label_tag }}</label>
+      <div class="col-sm-4">
+        {% render_field user_form.username class="form-control" placeholder="请输入用户名" %}
       </div>
-      <div class="form-group">
-        <label for="id_phone" class="col-sm-2 col-sm-offset-2 control-label">手机：</label>
-        <div class="col-sm-4">
-          <input type="text" class="form-control" name="phone" id="id_phone" required placeholder="请输入手机号">
-        </div>
+    </div>
+    <div class="form-group">
+      <label for="{{ user_profile.phone.id_for_label }}" class="col-sm-2 col-sm-offset-2 control-label">{{ user_profile.phone.label_tag }}</label>
+      <div class="col-sm-4">
+        {% render_field user_profile.phone class="form-control" placeholder="请输入手机号" %}
       </div>
-      <div class="form-group">
-        <label for="id_email" class="col-sm-2 col-sm-offset-2 control-label">邮箱：</label>
-        <div class="col-sm-4">
-          <input type="email" class="form-control" name="email" id="id_email" required placeholder="请输入邮箱">
-        </div>
+    </div>
+    <div class="form-group">
+      <label for="{{ user_form.email.id_for_label }}" class="col-sm-2 col-sm-offset-2 control-label">{{ user_form.email.label_tag }}</label>
+      <div class="col-sm-4">
+        {% render_field user_form.email class="form-control" placeholder="请输入邮箱" %}
       </div>
-      <div class="form-group">
-        <label for="id_password" class="col-sm-2 col-sm-offset-2 control-label">密码：</label>
-        <div class="col-sm-4">
-          <input type="password" class="form-control" name="password" id="id_password" required placeholder="请输入密码">
-        </div>
+    </div>
+    <div class="form-group">
+      <label for="{{ user_form.password.id_for_label }}" class="col-sm-2 col-sm-offset-2 control-label">{{ user_form.password.label_tag }}</label>
+      <div class="col-sm-4">
+        {% render_field user_form.password class="form-control" placeholder="请输入密码" %}
       </div>
-      <div class="form-group">
-        <label for="id_password2" class="col-sm-2 col-sm-offset-2 control-label">确认密码：</label>
-        <div class="col-sm-4">
-          <input type="password" class="form-control" name="password2" id="id_password2" required placeholder="请输入密码">
-        </div>
+    </div>
+    <div class="form-group">
+      <label for="{{ user_form.password2.id_for_label }}" class="col-sm-2 col-sm-offset-2 control-label">{{ user_form.password2.label_tag }}</label>
+      <div class="col-sm-4">
+        {% render_field user_form.password2 class="form-control" placeholder="请确认密码" %}
       </div>
-      <div class="form-group">
-        <label for="id_birth" class="col-sm-2 col-sm-offset-2 control-label">生日：</label>
-        <div class="col-sm-4">
-          <input type="date" class="form-control" name="birth" id="id_birth">
-        </div>
+    </div>
+    <div class="form-group">
+      <label for="{{ user_profile.birth.id_for_label }}" class="col-sm-2 col-sm-offset-2 control-label">{{ user_profile.birth.label_tag }}</label>
+      <div class="col-sm-4">
+        {% render_field user_profile.birth class="form-control" placeholder="请输入生日" type="date" %}
       </div>
-      <div class="form-group">
-        <div class="col-sm-offset-6 col-sm-2">
-          <button type="submit" class="btn btn-default">注册</button>
-        </div>
-      </div>
-    </form>
+    </div>
+
+  <div class="form-group">
+    <div class="text-right col-sm-4 col-sm-offset-4">
+      <input type="submit" class="btn btn-default" value="注册">
+    </div>
+  </div>
+  </form>
   </div>
 {% endblock %}

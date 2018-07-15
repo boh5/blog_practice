@@ -6,8 +6,9 @@
 """
 from django import forms
 from django.contrib.auth.models import User
+from django.forms import TextInput
 
-from account.models import UserProfile
+from account.models import UserProfile, UserInfo
 
 
 class LoginForm(forms.Form):
@@ -16,8 +17,8 @@ class LoginForm(forms.Form):
 
 
 class RegistrationForm(forms.ModelForm):
-    password = forms.CharField(label='Password', widget=forms.PasswordInput)
-    password2 = forms.CharField(label='Confirm Password', widget=forms.PasswordInput)
+    password = forms.CharField(label='密码', widget=forms.PasswordInput)
+    password2 = forms.CharField(label='确认密码', widget=forms.PasswordInput)
 
     class Meta:
         model = User
@@ -34,3 +35,30 @@ class UserProfileForm(forms.ModelForm):
     class Meta:
         model = UserProfile
         fields = ('phone', 'birth')
+
+        # 修改templates中label的显示名称
+        labels = {
+            'phone': '电话',
+            'birth': '生日',
+        }
+
+
+class UserInfoForm(forms.ModelForm):
+    class Meta:
+        model = UserInfo
+        fields = ('school', 'company', 'profession', 'address', 'about_me', 'photo')
+
+        labels = {
+            'school': '毕业院校',
+            'company': '工作单位',
+            'profession': '职业',
+            'address': '地址',
+            'about_me': '个人介绍',
+            'photo': '头像',
+        }
+
+
+class UserForm(forms.ModelForm):
+    class Meta:
+        model = User
+        fields = ('email',)

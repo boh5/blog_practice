@@ -39,6 +39,7 @@ INSTALLED_APPS = [
     'django.contrib.staticfiles',
     'blog',
     'account',
+    'widget_tweaks',
 ]
 
 MIDDLEWARE = [
@@ -126,3 +127,13 @@ STATICFILES_DIRS = (
 )
 
 LOGIN_REDIRECT_URL = '/blog/'
+
+# Email server
+# EMAIL_BACKEND = 'django.core.mail.backends.smtp.EmailBackend'
+EMAIL_HOST = 'smtp.163.com'
+EMAIL_PORT = 25
+# EMAIL_USE_SSL = True
+EMAIL_HOST_USER = "*****"
+EMAIL_HOST_PASSWORD = "*****"
+# SERVER_EMAIL = EMAIL_HOST_USR
+DEFAULT_FROM_EMAIL = EMAIL_HOST_USER

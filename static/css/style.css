@@ -19,6 +19,15 @@ body nav.navbar-head {
     color: rgba(255, 255, 255, 0.75);
 }
 
+nav.navbar-head button {
+    color: rgba(255, 255, 255, 0.75) !important;
+    background-color: #24292e !important;
+}
+
+.dropdown-menu li a:hover {
+    color: #0366d6 !important;
+}
+
 .navbar-head .container-fluid {
     margin-left: 45px;
     margin-right: 45px;
