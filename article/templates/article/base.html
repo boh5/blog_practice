@@ -20,10 +20,16 @@
       <script src="https://cdn.bootcss.com/respond.js/1.4.2/respond.min.js"></script>
     <![endif]-->
 </head>
-{% include 'header.html' %}
+{% include 'article/header.html' %}
 <body>
 <div class="container">
-  {% block content %}{% endblock %}
+  <div class="col-sm-2">
+    {% include 'article/leftslider.html' %}
+  </div>
+  <div class="col-sm-10">
+    {% block content %}
+    {% endblock %}
+  </div>
 </div>
 {% include 'footer.html' %}
 <!-- jQuery (Bootstrap 的所有 JavaScript 插件都依赖 jQuery，所以必须放在前边) -->

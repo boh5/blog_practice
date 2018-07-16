@@ -1,0 +1,114 @@
+{% extends 'article/base.html' %}
+{% load widget_tweaks %}
+{% load staticfiles %}
+{% block title %}
+  文章栏目
+{% endblock %}
+
+{% block content %}
+  <div>
+    <p class="text-right">
+      <!-- Button trigger modal -->
+      <button type="button" class="btn btn-primary" data-toggle="modal" data-target="#addModal">
+        新增栏目
+      </button>
+
+      <!-- Modal add -->
+    <div class="modal fade" id="addModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel">
+      <div class="modal-dialog" role="document">
+        <div class="modal-content">
+          <div class="modal-header">
+            <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span
+                    aria-hidden="true">&times;</span></button>
+            <h4 class="modal-title" id="myModalLabel">新增栏目</h4>
+          </div>
+          <form action="{% url 'article:article_column' %}" method="post">
+            {% csrf_token %}
+            <div class="modal-body">
+              {#            <input class="form-control" type="text" name="column" placeholder="请输入栏目名称">#}
+              {% render_field column_form.column class='form-control' placeholder='请输入栏目名称' %}
+            </div>
+            <div class="modal-footer">
+              <button type="button" class="btn btn-default" data-dismiss="modal">取消</button>
+              <button type="submit" class="btn btn-primary">保存</button>
+            </div>
+          </form>
+        </div>
+      </div>
+    </div>
+    </p>
+    <table class="table table-hover">
+      <tr>
+        <td>序号</td>
+        <td>栏目名称</td>
+        <td>操作</td>
+      </tr>
+      {% for column in columns %}
+        <tr>
+          <td>{{ forloop.counter }}</td>
+          <td>{{ column.column }}</td>
+          <td>
+            <!-- Button trigger modal -->
+            <a data-toggle="modal" data-target="#renameModal{{ column.id }}">
+              <span class="glyphicon glyphicon-pencil"></span>
+            </a>
+            <a data-toggle="modal" data-target="#delModal{{ column.id }}">
+              <span class="glyphicon glyphicon-trash"></span>
+            </a>
+
+            <!-- Modal rename -->
+            <div class="modal fade" id="renameModal{{ column.id }}" tabindex="-1" role="dialog"
+                 aria-labelledby="myModalLabel">
+              <div class="modal-dialog" role="document">
+                <div class="modal-content">
+                  <div class="modal-header">
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span
+                            aria-hidden="true">&times;</span></button>
+                    <h4 class="modal-title" id="myModalLabel">修改名称</h4>
+                  </div>
+                  <form action="{% url 'article:rename_article_column' %}" method="post">
+                    {% csrf_token %}
+                    <div class="modal-body">
+                      <input type="hidden" name="column_id" value="{{ column.id }}">
+                      {% render_field column_form.column class="form-control" placeholder=column.column %}
+                    </div>
+                    <div class="modal-footer">
+                      <button type="button" class="btn btn-default" data-dismiss="modal">取消</button>
+                      <button type="submit" class="btn btn-primary">确认</button>
+                    </div>
+                  </form>
+                </div>
+              </div>
+            </div>
+            <!-- Modal del -->
+            <div class="modal fade" id="delModal{{ column.id }}" tabindex="-1" role="dialog"
+                 aria-labelledby="myModalLabel">
+              <div class="modal-dialog" role="document">
+                <div class="modal-content">
+                  <div class="modal-header">
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span
+                            aria-hidden="true">&times;</span></button>
+                    <h4 class="modal-title" id="myModalLabel">确认删除</h4>
+                  </div>
+                  <form action="{% url 'article:del_article_column' %}" method="post">
+                    {% csrf_token %}
+                    <div class="modal-body">
+                      <input type="hidden" name="column_id" value="{{ column.id }}">
+                      <p><strong>{{ column.column }}</strong></p>
+                    </div>
+                    <div class="modal-footer">
+                      <button type="button" class="btn btn-default" data-dismiss="modal">取消</button>
+                      <button type="submit" class="btn btn-primary">确认</button>
+                    </div>
+                  </form>
+                </div>
+              </div>
+            </div>
+          </td>
+        </tr>
+      {% empty %}
+        <p>你还没有设置栏目，太懒了-_-</p>
+      {% endfor %}
+    </table>
+  </div>
+{% endblock %}

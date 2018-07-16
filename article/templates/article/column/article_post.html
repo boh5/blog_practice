@@ -1,0 +1,59 @@
+{% extends 'article/base.html' %}
+{% load staticfiles %}
+{% load widget_tweaks %}
+
+{% block title %}
+  文章栏目
+{% endblock %}
+
+{% block content %}
+  <link rel="stylesheet" href="{% static 'editor/css/editormd.min.css' %}">
+  <div class="">
+    <form class="form-horizontal" action="." method="post">
+      {% csrf_token %}
+      <div class="form-group">
+        <label for="{{ article_post_form.title.id_for_label }}"
+               class="col-sm-2">{{ article_post_form.title.label }}</label>
+        {% render_field article_post_form.title class='form-control' %}
+      </div>
+      <div class="form-group">
+        <label for="id_select_column">栏目：</label>
+        <select class="form-control" id="id_select_column" name="column_id">
+          {% for column in article_columns %}
+            {% ifequal column this_article_column %}
+              <option value="{{ column.id }}" selected="selected">{{ column.column }}</option>
+            {% else %}
+              <option value="{{ column.id }}">{{ column.column }}</option>
+            {% endifequal %}
+          {% endfor %}
+        </select>
+      </div>
+      <div class="form-group">
+        <label for="{{ article_post_form.body.id_for_label }}">{{ article_post_form.body.label }}</label>
+        {#      {% render_field article_post_form.body class="form-control" %}#}
+        <div id="editormd">
+          <textarea id="{{ article_post_form.body.id_for_label }}"
+                    style="display:none;" name="body">{{ article_post_form.body|striptags }}</textarea>
+        </div>
+
+      </div>
+      <div class="form-group">
+        <div class="text-right">
+          <input type="submit" class="btn btn-default" value="发布">
+        </div>
+      </div>
+    </form>
+  </div>
+  <script src="https://cdn.bootcss.com/jquery/1.12.4/jquery.min.js"></script>
+  <script src="{% static 'editor/editormd.min.js' %}"></script>
+  <script type="text/javascript">
+      $(function () {
+          var editor = editormd("editormd", {
+              width: '100%',
+              height: '640,',
+              syncScrolling: 'single',
+              path: "{% static 'editor/lib/' %}"
+          });
+      });
+  </script>
+{% endblock %}
