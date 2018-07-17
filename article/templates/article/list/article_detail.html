@@ -1,43 +1,161 @@
 {% extends 'base.html' %}
 {% load staticfiles %}
+{% load widget_tweaks %}
+{% load article_tags %}
 
 {% block title %}
   文章详情
 {% endblock %}
 
 {% block content %}
-  <div class="col-sm-8 col-sm-offset-2">
-    <div>
-      <header>
-        <h1>{{ article.title }}</h1>
-        <p>{{ article.author.username }}</p>
-      </header>
-      <link rel="stylesheet" href="{% static 'editor/css/editormd.preview.min.css' %}">
-      <div id="editormd-view">
-        <textarea id="append-test" style="display: none">{{ article.body }}</textarea>
+  {% with total_likes=article.users_like.count users_like=article.users_like.all %}
+    <div class="col-sm-6 col-sm-offset-2">
+      <div>
+        <header>
+          <h1>{{ article.title }}</h1>
+          <p>
+            <a href="{% url 'article:list_article_titles' %}?username={{ article.author.username }}">{{ article.author.username }}</a>
+            <span style="margin-left: 20px"
+                  class="glyphicon glyphicon-thumbs-up">{{ total_likes }}like{{ total_likes | pluralize }}</span>
+            <span style="margin-left: 20px"
+                  class="glyphicon glyphicon-eye-open">{{ total_views }}view{{ total_views | pluralize }}</span>
+            <span style="margin-left: 20px">标签：{{ article.article_tag.all | join:', ' }}</span>
+          </p>
+        </header>
+        <link rel="stylesheet" href="{% static 'editor/css/editormd.preview.min.css' %}">
+        <div id="editormd-view">
+          <textarea id="append-test" style="display: none">{{ article.body }}</textarea>
+        </div>
+      </div>
+      <div>
+        <p class="text-center">
+          <a onclick="like_article({{ article.id }}, 'like')" href="#"><span
+                  class="glyphicon glyphicon-thumbs-up">like</span> </a>
+          <a onclick="like_article({{ article.id }}, 'unlike')" href="#"><span
+                  class="glyphicon glyphicon-thumbs-up" style="margin-left: 15px">unlike</span> </a>
+        </p>
+      </div>
+      <div>
+        <p class="text-center"><strong>点赞本文的读者</strong></p>
+        {% for user in article.users_like.all %}
+          <p class="text-center">{{ user.username }}</p>
+        {% empty %}
+          <p class="text-center">还没有人对本文表态</p>
+        {% endfor %}
+
+      </div>
+      <hr>
+      <div>
+        <h3><span class="glyphicon glyphicon-send"></span>看文章，发评论，来一发</h3>
+        <form action="." method="post" class="form-horizontal" role="form">
+          {% csrf_token %}
+          <div class="form-group">
+            <label for="{{ comment_form.commentator.id_for_label }}"
+                   class="control-label">{{ comment_form.commentator.label }}</label>
+            <div>
+              {% render_field comment_form.commentator class="form-control" %}
+            </div>
+          </div>
+          <div class="form-group">
+            <label for="{{ comment_form.body.id_for_label }}"
+                   class="control-label">{{ comment_form.body.label }}</label>
+            <div>
+              {% render_field comment_form.body class="form-control" %}
+            </div>
+          </div>
+          <div class="form-group">
+            <div class="text-right">
+              <input type="submit" class="btn btn-default" value="提交">
+            </div>
+          </div>
+        </form>
+        <h3><span class="glyphicon glyphicon-bullhorn"></span>本文有{{ article.comments.count }}条评论</h3>
+        {% for comment in article.comments.all %}
+          <div>
+            <p><strong>{{ comment.commentator }}</strong>说</p>
+            <p style="margin-left: 40px">{{ comment.body }}</p>
+          </div>
+        {% empty %}
+          <p>还没有评论</p>
+        {% endfor %}
       </div>
     </div>
-  </div>
-  <script src="https://cdn.bootcss.com/jquery/1.12.4/jquery.min.js"></script>
-  <script src="{% static 'editor/lib/marked.min.js' %}"></script>
-  <script src="{% static 'editor/lib/prettify.min.js' %}"></script>
-  <script src="{% static 'editor/lib/raphael.min.js' %}"></script>
-  <script src="{% static 'editor/lib/underscore.min.js' %}"></script>
-  <script src="{% static 'editor/lib/sequence-diagram.min.js' %}"></script>
-  <script src="{% static 'editor/lib/flowchart.min.js' %}"></script>
-  <script src="{% static 'editor/lib/jquery.flowchart.min.js' %}"></script>
-  <script src="{% static 'editor/editormd.min.js' %}"></script>
+    <div class="col-sm-2">
+      <div>
+        <h3 class="text-center">最受欢迎的文章 </h3>
+        <ol>
+          {% for article in most_viewed %}
+            <li>
+              <a href="{{ article.get_url_path }}">{{ article.title }}</a>
+            </li>
+          {% endfor %}
+        </ol>
+      </div>
+      <hr>
+      <div>
+        <h3 class="text-center">最新文章</h3>
+        {% latest_articles %}
+      </div>
+      <div>
+        <h3 class="text-center">最多评论</h3>
+        {% most_commented_articles as most_comments %}
+        <ol>
+          {% for most_comment in most_comments %}
+            <li>
+              <a href="{{ most_comment.get_url_path }}">{{ most_comment.title }}</a>
+            </li>
+          {% endfor %}
+        </ol>
+      </div>
+      <div>
+        <h3 class="text-center">相似文章</h3>
+        {% for similar_article in similar_articles %}
+          <p><a href="{{ similar_article.get_url_path }}">{{ similar_article.title }}</a></p>
+        {% empty %}
+          <p>没有相似文章</p>
+        {% endfor %}
 
-  <script type="text/javascript">
-      $(function () {
-          editormd.markdownToHTML("editormd-view", {
-              htmlDecode: "style, script, iframe",
-              emoji: true,
-              taskList: true,
-              tex: true,
-              flowChart: true,
-              sequeceDiagram: true,
-          });
-      });
-  </script>
+      </div>
+    </div>
+    <script src="https://cdn.bootcss.com/jquery/1.12.4/jquery.min.js"></script>
+    <script src="{% static 'editor/lib/marked.min.js' %}"></script>
+    <script src="{% static 'editor/lib/prettify.min.js' %}"></script>
+    <script src="{% static 'editor/lib/raphael.min.js' %}"></script>
+    <script src="{% static 'editor/lib/underscore.min.js' %}"></script>
+    <script src="{% static 'editor/lib/sequence-diagram.min.js' %}"></script>
+    <script src="{% static 'editor/lib/flowchart.min.js' %}"></script>
+    <script src="{% static 'editor/lib/jquery.flowchart.min.js' %}"></script>
+    <script src="{% static 'editor/editormd.min.js' %}"></script>
+    <script src="{% static 'js/layer.js' %}"></script>
+
+    <script type="text/javascript">
+        $(function () {
+            editormd.markdownToHTML("editormd-view", {
+                htmlDecode: "style, script, iframe",
+                emoji: true,
+                taskList: true,
+                tex: true,
+                flowChart: true,
+                sequeceDiagram: true,
+            });
+        });
+
+        function like_article(id, action) {
+            $.ajax({
+                url: "{% url 'article:like_article' %}",
+                type: 'POST',
+                data: {'id': id, 'action': action},
+                success: function (e) {
+                    if (e == '1') {
+                        layer.msg('感谢点赞');
+                        window.location.reload()
+                    } else {
+                        layer.msg('我会继续努力');
+                        window.location.reload()
+                    }
+                },
+            });
+        }
+    </script>
+  {% endwith %}
 {% endblock %}

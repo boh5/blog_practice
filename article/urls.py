@@ -4,7 +4,7 @@
 @Time    : 2018/7/16 1:25
 @File    : urls.py
 """
-from django.urls import path
+from django.urls import path, re_path
 
 from article import views
 
@@ -21,4 +21,8 @@ urlpatterns = [
     path('edit-article/<int:article_id>/', views.edit_article, name='edit-article'),
     path('list-article-titles/', views.list_article_titles, name='list_article_titles'),
     path('list-article-detail/<int:article_id>/<slug:slug>/', views.list_article_detail, name='list_article_detail'),
+    path('like-article/', views.like_article, name='like_article'),
+    path('article-tag/', views.article_tag, name='article_tag'),
+    path('del-article-tag/', views.del_article_tag, name='del_article_tag'),
+    path('rename-article-tag/', views.edit_article_tag, name='rename_article_tag'),
 ]

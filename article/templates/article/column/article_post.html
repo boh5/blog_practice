@@ -28,6 +28,26 @@
           {% endfor %}
         </select>
       </div>
+      {% for article_tag in article_tags %}
+        {% if article_tag in article_tags_chose %}
+          <div class="checkbox-inline">
+            <label>
+              <input type="checkbox" value="{{ article_tag.id }}" name="article_tag" id="tag{{ article_tag.id }}" checked>
+              {{ article_tag.tag }}
+            </label>
+          </div>
+        {% else %}
+          <div class="checkbox-inline">
+            <label>
+              <input type="checkbox" value="{{ article_tag.id }}" name="article_tag" id="tag{{ article_tag.id }}">
+              {{ article_tag.tag }}
+            </label>
+          </div>
+        {% endif %}
+      {% empty %}
+        <p>你还没有设置标签，请<a href="{% url 'article:article_tag' %}">添加标签</a></p>
+      {% endfor %}
+
       <div class="form-group">
         <label for="{{ article_post_form.body.id_for_label }}">{{ article_post_form.body.label }}</label>
         {#      {% render_field article_post_form.body class="form-control" %}#}

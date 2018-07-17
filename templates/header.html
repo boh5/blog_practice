@@ -11,9 +11,9 @@
     <!-- Collect the nav links, forms, and other content for toggling -->
     <div class="collapse navbar-collapse" id="bs-example-navbar-collapse-1">
       <ul class="nav navbar-nav">
-        <li class="nav-active"><a href="{% url 'blog:blog_title' %}">首页 <span class="sr-only">(current)</span></a></li>
-        <li><a href="#">归档</a></li>
-        <li><a href="#">工具书</a></li>
+        <li><a href="{% url 'index' %}">首页 <span class="sr-only">(current)</span></a></li>
+        <li><a href="{% url 'blog:blog_title' %}">BLOG</a></li>
+        <li><a href="{% url 'article:list_article_titles' %}">文章</a></li>
         <li><a href="#">关于</a></li>
       </ul>
       <ul class="nav navbar-nav navbar-right">

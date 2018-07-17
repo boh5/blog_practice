@@ -13,6 +13,8 @@ https://docs.djangoproject.com/en/2.0/ref/settings/
 import os
 
 # Build paths inside the project like this: os.path.join(BASE_DIR, ...)
+from django.urls import reverse_lazy
+
 BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 
 
@@ -25,7 +27,7 @@ SECRET_KEY = 't-+auq=v7l)x+@$tf_kqpm9frpx9xbz*x@r7x+ag)c8-!9kguj'
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
 
-ALLOWED_HOSTS = []
+ALLOWED_HOSTS = ['*']
 
 
 # Application definition
@@ -127,7 +129,7 @@ STATICFILES_DIRS = (
     os.path.join(BASE_DIR, 'static'),
 )
 
-LOGIN_REDIRECT_URL = '/blog/'
+LOGIN_REDIRECT_URL = reverse_lazy('index')
 
 # Email server
 # EMAIL_BACKEND = 'django.core.mail.backends.smtp.EmailBackend'
@@ -138,3 +140,8 @@ EMAIL_HOST_USER = "*****"
 EMAIL_HOST_PASSWORD = "*****"
 # SERVER_EMAIL = EMAIL_HOST_USR
 DEFAULT_FROM_EMAIL = EMAIL_HOST_USER
+
+# redis settings
+REDIS_HOST = 'localhost'
+REDIS_PORT = 6379
+REDIS_DB = 0

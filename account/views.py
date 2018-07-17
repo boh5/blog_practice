@@ -36,9 +36,9 @@ def register(request):
             new_profile = userprofile_form.save(commit=False)
             new_profile.user = new_user
             new_profile.save()
-            return HttpResponse('注册成功！')
+            return redirect('account:user_login')
         else:
-            return HttpResponse('注册失败！')
+            return redirect('account:user_register')
     else:
         user_form = RegistrationForm()
         user_profile = UserProfileForm()

@@ -1,0 +1,100 @@
+{% extends 'article/base.html' %}
+{% load staticfiles %}
+{% load widget_tweaks %}
+
+{% block title %}
+  文章标签
+{% endblock %}
+
+{% block content %}
+  <div>
+    <p>添加文章标签</p>
+    <form action="." class="form-horizontal" method="post">
+      {% csrf_token %}
+      <div class="form-group">
+        <label for="{{ article_tag_form.tag.id_for_label }}" class="control-label">{{ article_tag_form.label }}</label>
+        <div class="col-sm-4">
+          {% render_field article_tag_form.tag class="form-control" placeholder="请输入标签名" %}
+        </div>
+      </div>
+      <div class="form-group">
+        <div class="text-right">
+          <input type="submit" class="btn btn-default" value="添加">
+        </div>
+      </div>
+    </form>
+  </div>
+  <div>
+    <p>已有标签列表</p>
+    <table class="table table-hover">
+      <tr>
+        <td>序号</td>
+        <td>文章标签</td>
+        <td>操作</td>
+      </tr>
+      {% for article_tag in article_tags %}
+        <tr id="{{ forloop.counter }}">
+          <td>{{ forloop.counter }}</td>
+          <td>{{ article_tag.tag }}</td>
+          <td>
+            <a data-toggle="modal" data-target="#renameModal{{ article_tag.id }}">
+              <span class="glyphicon glyphicon-pencil"></span>
+            </a>
+            <a data-toggle="modal" data-target="#delModal{{ article_tag.id }}">
+              <span class="glyphicon glyphicon-trash"></span>
+            </a>
+          </td>
+        </tr>
+        <!-- Modal rename -->
+        <div class="modal fade" id="renameModal{{ article_tag.id }}" tabindex="-1" role="dialog"
+             aria-labelledby="myModalLabel">
+          <div class="modal-dialog" role="document">
+            <div class="modal-content">
+              <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span
+                        aria-hidden="true">&times;</span></button>
+                <h4 class="modal-title" id="myModalLabel">修改名称</h4>
+              </div>
+              <form action="{% url 'article:rename_article_tag' %}" method="post">
+                {% csrf_token %}
+                <div class="modal-body">
+                  <input type="hidden" name="tag_id" value="{{ article_tag.id }}">
+                  <input type="text" name="tag_tag" placeholder="{{ article_tag.tag }}">
+                </div>
+                <div class="modal-footer">
+                  <button type="button" class="btn btn-default" data-dismiss="modal">取消</button>
+                  <button type="submit" class="btn btn-primary">确认</button>
+                </div>
+              </form>
+            </div>
+          </div>
+        </div>
+        <!-- Modal del -->
+        <div class="modal fade" id="delModal{{ article_tag.id }}" tabindex="-1" role="dialog"
+             aria-labelledby="myModalLabel">
+          <div class="modal-dialog" role="document">
+            <div class="modal-content">
+              <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span
+                        aria-hidden="true">&times;</span></button>
+                <h4 class="modal-title" id="myModalLabel">确认删除</h4>
+              </div>
+              <form action="{% url 'article:del_article_tag' %}" method="post">
+                {% csrf_token %}
+                <div class="modal-body">
+                  <input type="hidden" name="tag_id" value="{{ article_tag.id }}">
+                  <p><strong>{{ article_tag.tag }}</strong></p>
+                </div>
+                <div class="modal-footer">
+                  <button type="button" class="btn btn-default" data-dismiss="modal">取消</button>
+                  <button type="submit" class="btn btn-primary">确认</button>
+                </div>
+              </form>
+            </div>
+          </div>
+        </div>
+      {% endfor %}
+
+    </table>
+  </div>
+{% endblock %}
