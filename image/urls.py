@@ -1,0 +1,19 @@
+"""
+
+@Author  : dilless
+@Time    : 2018/7/18 19:39
+@File    : urls.py
+"""
+from django.urls import path
+
+from image import views
+
+app_name = 'image'
+
+urlpatterns = [
+    path('upload-image/', views.upload_image, name='upload_image'),
+    path('list-images/', views.list_images, name='list_images'),
+    path('del-image/', views.del_image, name='del_image'),
+    path('images/', views.falls_images, name='falls_images'),
+]
+

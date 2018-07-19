@@ -1,0 +1,39 @@
+{% extends 'base.html' %}
+
+{% block title %}
+  课时列表
+{% endblock %}
+
+{% block content %}
+  <div>
+    <div class="text-center">
+      <h1>{{ course.title }}</h1>
+      <p>课程课时列表</p>
+      {% if user in course.student.all %}
+        <div class="alert alert-info" role="alert">你正在学习该课程</div>
+      {% else %}
+        <form action="{% url 'course:lessons_list' course.id %}" method="post">
+          {% csrf_token %}
+          <input type="hidden" value="{{ course.id }}" name="course_id">
+          <button type="submit" class="btn btn-default">学习该课程</button>
+        </form>
+      {% endif %}
+    </div>
+    <table class="table table-hover">
+      <tr>
+        <td>序号</td>
+        <td>课时标题</td>
+        <td>发布日期</td>
+      </tr>
+      {% for lesson in course.lesson.all %}
+        <tr>
+          <td>{{ forloop.counter }}</td>
+          <td><a href="{% url 'course:detail_lesson' lesson.id %}">{{ lesson.title }}</a></td>
+          <td>{{ lesson.create_time | date:"Y-m-d" }}</td>
+        </tr>
+      {% empty %}
+        <p>对不起，该课程还没有发布</p>
+      {% endfor %}
+    </table>
+  </div>
+{% endblock %}

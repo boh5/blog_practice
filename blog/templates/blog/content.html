@@ -1,4 +1,5 @@
 {% extends 'base.html' %}
+{% load article_tags %}
 
 {% block title %}
   blog article
@@ -15,7 +16,7 @@
         <span>{{ article.author.username }}</span>
         <span style="margin-left: 20px">{{ publish_time }}</span>
       </p>
-      <div>{{ article.body }}</div>
+      <div>{{ article.body | markdown }}</div>
     </div>
     <div class="col-xs-6 col-md-4">
       <h2>广告</h2>

@@ -14,7 +14,9 @@
         <li><a href="{% url 'index' %}">首页 <span class="sr-only">(current)</span></a></li>
         <li><a href="{% url 'blog:blog_title' %}">BLOG</a></li>
         <li><a href="{% url 'article:list_article_titles' %}">文章</a></li>
-        <li><a href="#">关于</a></li>
+        <li><a href="{% url 'image:falls_images' %}">美图</a></li>
+        <li><a href="{% url 'course:course_list' %}">课程列表</a></li>
+        <li><a href="{% url 'course:about' %}">关于</a></li>
       </ul>
       <ul class="nav navbar-nav navbar-right">
         {% if user.is_authenticated %}

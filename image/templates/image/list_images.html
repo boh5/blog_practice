@@ -1,0 +1,112 @@
+{% extends 'article/base.html' %}
+
+{% load staticfiles %}
+{% load widget_tweaks %}
+{% load thumbnail %}
+
+{% block title %}
+  图片列表
+{% endblock %}
+
+{% block content %}
+  <div>
+    <div>
+      <p class="text-right">
+        <!-- Button trigger modal -->
+        <button type="button" class="btn btn-primary" data-toggle="modal" data-target="#addModal">
+          添加图片
+        </button>
+
+        <!-- Modal add -->
+      <div class="modal fade" id="addModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel">
+        <div class="modal-dialog" role="document">
+          <div class="modal-content">
+            <div class="modal-header">
+              <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span
+                      aria-hidden="true">&times;</span></button>
+              <h4 class="modal-title" id="myModalLabel">添加图片</h4>
+            </div>
+            <form action="{% url 'image:upload_image' %}" method="post">
+              {% csrf_token %}
+              <div class="modal-body">
+                <div class="form-group">
+                  <label for="id_title" class="control-label">标题</label>
+                  <div>
+                    <input type="text" name="title" id="id_title" class="form-control">
+                  </div>
+                </div>
+                <div class="form-group">
+                  <label for="id_url" class="control-label">地址</label>
+                  <div>
+                    <input type="text" name="url" id="id_url" class="form-control">
+                  </div>
+                </div>
+                <div class="form-group">
+                  <label for="id_description" class="control-label">描述</label>
+                  <div>
+                    <textarea name="description" id="id_description" class="form-control"></textarea>
+                  </div>
+                </div>
+              </div>
+              <div class="modal-footer">
+                <button type="button" class="btn btn-default" data-dismiss="modal">取消</button>
+                <button type="submit" class="btn btn-primary">保存</button>
+              </div>
+            </form>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div>
+      <table class="table table-hover">
+        <tr>
+          <td>序号</td>
+          <td>标题</td>
+          <td>图片</td>
+          <td>操作</td>
+        </tr>
+        {% for image in images %}
+          <tr>
+            <td>{{ forloop.counter }}</td>
+            <td>{{ image.title }}</td>
+            {% thumbnail image.image '100x100' as img %}
+            <td><img src="{{ img.url }}" alt="{{ image.description }}"></td>
+            {% endthumbnail %}
+            <td>
+              <a data-toggle="modal" data-target="#delModal{{ image.id }}">
+                <span class="glyphicon glyphicon-trash"></span>
+              </a>
+            </td>
+          </tr>
+          <div class="modal fade" id="delModal{{ image.id }}" tabindex="-1" role="dialog"
+               aria-labelledby="myModalLabel">
+            <div class="modal-dialog" role="document">
+              <div class="modal-content">
+                <div class="modal-header">
+                  <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span
+                          aria-hidden="true">&times;</span></button>
+                  <h4 class="modal-title" id="myModalLabel">确认删除</h4>
+                </div>
+                <form action="{% url 'image:del_image' %}" method="post">
+                  {% csrf_token %}
+                  <div class="modal-body">
+                    <input type="hidden" name="image_id" value="{{ image.id }}">
+                    <p><strong>删除《{{ image.title }}》后无法恢复，请确认</strong></p>
+                  </div>
+                  <div class="modal-footer">
+                    <button type="button" class="btn btn-default" data-dismiss="modal">取消</button>
+                    <button type="submit" class="btn btn-primary">确认</button>
+                  </div>
+                </form>
+              </div>
+            </div>
+          </div>
+        {% empty %}
+          <p>还没有上传图片，请点击上面的按钮添加图片</p>
+        {% endfor %}
+      </table>
+    </div>
+  {% include 'paginator.html' %}
+  </div>
+{% endblock %}

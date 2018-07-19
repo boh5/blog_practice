@@ -1,0 +1,31 @@
+{% extends 'article/base.html' %}
+{% load widget_tweaks %}
+
+{% block title %}
+添加课程
+{% endblock %}
+
+{% block content %}
+<div style="margin: 0 100px">
+  <form class="form-horizontal" action="." method="post">
+    {% csrf_token %}
+    <div class="form-group">
+      <label for="{{ form.title.id_for_label }}" class="control-label">{{ form.title.label }}</label>
+      <div>
+        {% render_field form.title class="form-control" placeholder="请输入标题" %}
+      </div>
+    </div>
+    <div class="form-group">
+      <label for="{{ form.overview.id_for_label }}" class="control-label">{{ form.overview.label }}</label>
+      <div>
+        {% render_field form.overview class="form-control" placeholder="请输入概览" %}
+      </div>
+    </div>
+    <div class="form-group">
+      <div class="text-right">
+        <input type="submit" class="btn btn-default" value="提交">
+      </div>
+    </div>
+  </form>
+</div>
+{% endblock %}

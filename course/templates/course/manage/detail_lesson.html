@@ -1,0 +1,42 @@
+{% extends 'article/base.html' %}
+
+{% block title %}
+  课时详情
+{% endblock %}
+
+{% block content %}
+  <div>
+    <div class="text-center">
+      <h1>{{ lesson.title }}</h1>
+      <p>讲师：{{ lesson.user.username }}</p>
+    </div>
+    <div>
+      {% if lesson.video %}
+        <div class="text-center">
+          <video src="{{ lesson.video.url }}" controls="controls" width="700px" height="700px"></video>
+          {% else %}
+          <p>该课时没有视频</p>
+        </div>
+      {% endif %}
+    </div>
+
+    {% if lesson.description %}
+      <div class="text-center">
+        <p>{{ lesson.description }}</p>
+        {% else %}
+        <p>该课时没有简介</p>
+      </div>
+    {% endif %}
+
+    {% if lesson.attach %}
+      <div class="text-center">
+        <p>
+          <a href="{{ lesson.attach.url }}">{{ lesson.attach.name | cut:'courses/user_' }}</a>
+        </p>
+        {% else %}
+        <p>该课时没有附件</p>
+      </div>
+    {% endif %}
+
+  </div>
+{% endblock %}
